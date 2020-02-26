@@ -17,6 +17,8 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ import edu.eci.cvds.servlet.model.Todo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,17 +36,23 @@ import javax.servlet.http.HttpServletResponse;
         urlPatterns = "/services"
 )
 
-public class Service {
+public class Service extends HttpServlet {
+    private ArrayList<Todo> todosList = new ArrayList<Todo>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Writer responseWriter = resp.getWriter();
-        Optional<String> optId = Optional.ofNullable(req.getParameter("id"));
-        String id = optId.isPresent() && !optId.get().isEmpty() ? optId.get() : "1";
+        try {
+            Writer responseWriter = resp.getWriter();
+            Optional <Integer> optId = Optional.ofNullable(Integer.parseInt(req.getParameter("id")));
+            Integer id = optId.isPresent() ? optId.get():1;
+            todosList.add(getTodo(id));
+            resp.setStatus(HttpServletResponse.SC_OK);
+            responseWriter.write(todosToHTMLTable(todosList));
+            responseWriter.flush();
+        }catch (IOException e){
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
 
-        resp.setStatus(HttpServletResponse.SC_OK);
-        responseWriter.write("Hello" + id + "!");
-        responseWriter.flush();
     }
 
     public static Todo getTodo(int id) throws MalformedURLException, IOException {
