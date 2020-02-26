@@ -32,28 +32,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(
-        urlPatterns = "/services"
-)
 
-public class Service extends HttpServlet {
-    private ArrayList<Todo> todosList = new ArrayList<Todo>();
+public class Service {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Writer responseWriter = resp.getWriter();
-            Optional <Integer> optId = Optional.ofNullable(Integer.parseInt(req.getParameter("id")));
-            Integer id = optId.isPresent() ? optId.get():1;
-            todosList.add(getTodo(id));
-            resp.setStatus(HttpServletResponse.SC_OK);
-            responseWriter.write(todosToHTMLTable(todosList));
-            responseWriter.flush();
-        }catch (IOException e){
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-
-    }
 
     public static Todo getTodo(int id) throws MalformedURLException, IOException {
         URL urldemo = new URL("https://jsonplaceholder.typicode.com/todos/" + id);
