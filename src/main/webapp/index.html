@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    
+    
+    <body>
+        <h1>Hello World! </h1>
+        <p>prueba de html parte III </p>
+        <form name="myForm" action="/services" method="doPost">
+            <input input type="text" name="id">
+            <button type="button" onclick="myFunction()">Submit</button>    
+            <p id="demo"></p>
+        </form>
+        <p id="demo"></p>
+        <script>
+        function myFunction() {
+            var x, text;        
+            x = document.forms["myForm"]["id"].value;  
+           if (isNaN(x)) {
+           text = "";
+           } else {
+           text = "Input OK";
+           }
+           document.getElementById("demo").innerHTML = text;
+         }
+    </script>
+    
+       
+
+        
+    </body>
+</html>
